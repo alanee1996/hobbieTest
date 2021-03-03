@@ -8,9 +8,12 @@ namespace hobbie.Entities
     {
         [Key]
         [Required]
-        public int id { get; set; }
+        public long id { get; set; }
         [Required]
         [MaxLength(100)]
         public string hobbie { get; set; }
+        [Required]
+        [ForeignKey("users")]
+        public long userId { get; set; }
     }
 }

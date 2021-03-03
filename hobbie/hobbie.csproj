@@ -7,6 +7,9 @@
   <ItemGroup>
     <Folder Include="Repositories\" />
     <Folder Include="Entities\" />
+    <Folder Include="Utilis\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
@@ -14,5 +17,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="NLog" Version="4.7.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\js\edit.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\js\edit.js" />
   </ItemGroup>
 </Project>

@@ -1,8 +1,62 @@
-﻿@{
+﻿@model List<UserSummaryView>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container_fluild">
+    <div class="d-flex flex-row-reverse">
+        <a asp-action="Create" asp-controller="Home" class="btn btn-primary text-white">Create User</a>
+    </div>
+    <div class="mt-5">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Hobbies</th>
+                        <th scope="col"> action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="5" class="text-center">No Data</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <th scope="row">@(i+1)</th>
+                                    <td>@Model[i].id</td>
+                                    <td>@Model[i].name</td>
+                                    <td>@Model[i].hobbies</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="pl-1 pr-1 col-md-6 col-sm-12">
+                                                <a asp-action="Edit" asp-controller="Home" asp-route-id="@Model[i].id" class="btn btn-link">Edit</a>
+                                            </div>
+                                            <div class="pl-1 pr-1 col-md-6 col-sm-12">
+                                                <a class="btn btn-link text-danger btn-delete" target="@Model[i].id">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+@section scripts {
+    <script type="text/javascript" src="~/js/home.js"></script>
+}

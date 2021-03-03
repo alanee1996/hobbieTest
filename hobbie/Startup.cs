@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using hobbie.Middlewares;
+using hobbie.Repositories;
+using Newtonsoft.Json.Serialization;
 
 namespace hobbie
 {
@@ -25,10 +28,17 @@ namespace hobbie
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DBContext>(o=> {
+            services.AddDbContext<DBContext>(o =>
+            {
                 o.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString"));
             });
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllers().AddNewtonsoftJson(o =>
+            {
+                o.UseCamelCasing(false);
+                o.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            });
+            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,8 +59,8 @@ namespace hobbie
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
+            //app.UseAuthorization();
+            app.UseJsonResponse();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

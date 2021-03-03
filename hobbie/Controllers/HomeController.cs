@@ -6,21 +6,48 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using hobbie.Models;
+using hobbie.Repositories;
+using hobbie.Utilis;
 
 namespace hobbie.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IUserRepository repository;
+        private Log log = Log.getInstance();
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(IUserRepository repository)
         {
-            _logger = logger;
+            this.repository = repository;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            return View(await repository.getAllUsers());
+        }
+
+        [HttpGet]
+        public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(long id)
+        {
+            try
+            {
+                var user = await repository.findUserId(id);
+                if (user == null) throw new Exception("User is null");
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                log.error("User edit get error id : {0}", ex: ex, id);
+                return View();
+            }
         }
 
         public IActionResult Privacy()
